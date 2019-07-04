@@ -1,0 +1,10 @@
+canvas
+{
+    width:90%;
+    height:90%;
+    border:2px solid black;
+}
+body
+{
+    background-color:rgb(20,20,20);
+}
