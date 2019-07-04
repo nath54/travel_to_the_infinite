@@ -14,8 +14,8 @@ class Cube{
     constructor(){
         this.px=500;
         this.py=300;
-        this.ptx=25;
-        this.pty=25;
+        this.tx=25;
+        this.ty=25;
         this.cl="black";
         this.vies=3
         this.speedx=0
@@ -84,16 +84,20 @@ class Rock{
     constructor(){
         this.px=parseInt(tex+Math.random()*tex);
         this.py=parseInt(Math.random()*tey);
-        this.tx=parseInt(5+Math.random()*45);
-        this.ty=parseInt(5+Math.random()*45);
+        this.tx=parseInt(15+Math.random()*45);
+        this.ty=this.tx
         this.cl="brown";
-        this.vit=parseInt(1+Math.random()*3);
+        this.vit=parseInt(3+Math.random()*8);
         this.delet=false;
     }
-    update(){
+    update(cub){
         this.px-=this.vit;
         if(this.px<0){
             this.delet=true
+        }
+        if( this.px >= cub.px || this.px <= cub.px+cub.tx || this.py>= cub.py || this.py <= cub.py+cub.ty){
+            cub.vies-=1;
+            this.delet=true;
         }
     }
 }
@@ -103,7 +107,7 @@ function aff(rocks,cub){
     ctx.fillRect(0,0,tex,tey);
     ctx.fillStyle="grey";
     ctx.fillRect(cub.px,cub.py,cub.tx,cub.ty);
-    document.getElementById("text").innerHTML = cub.px,cub.py;
+    document.getElementById("text").innerHTML = cub.ty;
     for(x=0;x<rocks.length;x++){
         ctx.fillStyle=rocks[x].cl;
         ctx.fillRect(rocks[x].px,rocks[x].py,rocks[x].tx,rocks[x].ty);    
@@ -142,8 +146,10 @@ function checkKeyUp(e) {
 //////////////////////////////
 
 var rocks=[];
-
+var nbrocks=5;
+ 
 cub=new Cube();
+encour=true;
 
 function main(){
     document.onkeyup = checkKeyUp;
@@ -153,7 +159,24 @@ function main(){
     if(keypressed[3]){ cub.move("right"); }
     aff(rocks,cub);
     cub.update();
-    //window.requestAnimationFrame(main);
+    for(x=0;x<rocks.length;x++){
+        rocks[x].update(cub)
+        if(rocks[x].delet){
+            rocks.splice(x,1);
+        }
+    }
+    while(rocks.length<nbrocks){
+        rocks.push( new Rock() );
+    }
+    if(cub.vies<=0){
+        encour=false;
+        ctx.font = "60px Arial";
+        ctx.fillStyle="darkred"
+        ctx.fillText("Perdu", 300, 300);
+    }
+    if(encour){
+        window.requestAnimationFrame(main);
+    }
 }
 
 window.requestAnimationFrame(main);
