@@ -95,7 +95,11 @@ class Rock{
         if(this.px<0){
             this.delet=true
         }
-        if( this.px >= cub.px || this.px <= cub.px+cub.tx || this.py>= cub.py || this.py <= cub.py+cub.ty){
+        var cond1=this.px >= cub.px && this.px <= cub.px+cub.tx && this.py>= cub.py && this.py <= cub.py+cub.ty
+        var cond2=this.px+this.tx >= cub.px && this.px+this.tx <= cub.px+cub.tx && this.py>= cub.py && this.py <= cub.py+cub.ty
+        var cond3=this.px >= cub.px && this.px <= cub.px+cub.tx && this.py+this.ty>= cub.py && this.py+this.ty<= cub.py+cub.ty
+        var cond4=this.px+this.tx >= cub.px && this.px+this.tx <= cub.px+cub.tx && this.py+this.ty >= cub.py && this.py+this.ty <= cub.py+cub.ty
+        if(cond1 || cond2 || cond3 || cond4){
             cub.vies-=1;
             this.delet=true;
         }
